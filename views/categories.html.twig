@@ -8,11 +8,11 @@
         {% if categories is not empty %}
             <p>Here are all your categories:</p>
             <ul>
-                { % for category in categories %}
+                {% for category in categories %}
                     <li> {{ category.getName }}</li>
                     {% endfor %}
             </ul>
-        { % endif %}
+        {% endif %}
 
         <form action='/categories' method='post'>
             <label for = 'name'>Category name</label>
