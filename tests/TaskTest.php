@@ -51,6 +51,24 @@ class TaskTest extends PHPUnit_Framework_TestCase
         //Assert
         $this->assertEquals([$test_task, $test_task2], $result);
     }
+
+    function test_deleteAll()
+    {
+        //Arrange
+        $description = "Wash the dog";
+        $description2 = "Water the lawn";
+        $test_task = new Task($description);
+        $test_task->save();
+        $test_task2 = new Task($description2);
+        $test_task2->save();
+
+        //Act
+        Task::deleteAll();
+
+        //Assert
+        $result = Task::getAll();
+        $this->assertEquals([], $result);
+    }
 }
 
 ?>
