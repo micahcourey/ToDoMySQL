@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>To Do List</title>
+    </head>
+    <body>
+        {% if tasks is not empty %}
+            <h1>Your tasks:</h1>
+            <ul>
+                {% for task in tasks %}
+                </li>{{ task.getDescription }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </body>
+</html>
