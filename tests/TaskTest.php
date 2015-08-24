@@ -51,7 +51,7 @@ class TaskTest extends PHPUnit_Framework_TestCase
     {
         $id = 1;
         $description = "Wash the dog";
-        $due_date = "tomorrow"; 
+        $due_date = "tomorrow";
         $test_task = new Task($description, $due_date, $id);
 
         $result = $test_task->getId();
@@ -170,6 +170,48 @@ class TaskTest extends PHPUnit_Framework_TestCase
         $test_task->delete();
 
         $this->assertEquals([$test_task2], Task::getAll());
+    }
+
+    function testAddCategory()
+    {
+
+        $name = "Work stuff";
+        $id = 1;
+        $test_category = new Category($name, $id);
+        $test_category->save();
+
+        $description = "File reports";
+        $id2 = 2;
+        $test_task = new Task($description, $id2);
+        $test_task->save();
+
+        $test_task->addCategory($test_category);
+
+        $this->assertEquals($test_task->getCategories(), [$test_category]);
+    }
+
+    function testGetCategories()
+    {
+        $name = "Work stuff";
+        $id = 1;
+        $test_category = new Category($name, $id);
+        $test_category->save();
+
+        $name2 = "Volunteer stuff";
+        $id2 = 2;
+        $test_category2 = new Category($name2, $id2);
+        $test_category2->save();
+
+        $description = "File reports";
+        $id3 = 3;
+        $test_task = new Task($description, $id3);
+        $test_task->save();
+
+        $test_task->addCategory($test_category);
+        $test_task->addCategory($test_category2);
+
+        $this->assertEquals($test_task->getCategories(), [$test_category, $test_category2]);
+        
     }
 }
 
