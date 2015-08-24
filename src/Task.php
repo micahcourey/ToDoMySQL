@@ -4,18 +4,16 @@ class Task
 {
     private $description;
     private $due_date;
-    private $category_id;
     private $id;
 
 
 
     //Constructor
-    function __construct($description, $due_date, $id = null, $category_id)
+    function __construct($description, $due_date, $id = null)
     {
         $this->description = $description;
         $this->due_date = $due_date;
         $this->id = $id;
-        $this->category_id = $category_id;
 
     }
 
@@ -46,16 +44,11 @@ class Task
         return $this->id;
     }
 
-    function getCategoryId()
-    {
-      return $this->category_id;
-    }
-
     //Save Method
     function save()
     {
-        $statement = $GLOBALS['DB']->exec("INSERT INTO tasks (description, due_date, category_id)
-        VALUES ('{$this->getDescription()}', '{$this->getDueDate()}', {$this->getCategoryId()})");
+        $statement = $GLOBALS['DB']->exec("INSERT INTO tasks (description, due_date)
+        VALUES ('{$this->getDescription()}', '{$this->getDueDate()}')");
         $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
@@ -68,8 +61,8 @@ class Task
             $description = $task['description'];
             $due_date = $task['due_date'];
             $id = $task['id'];
-            $category_id = $task['category_id'];
-            $new_task = new Task($description, $due_date, $id, $category_id);
+
+            $new_task = new Task($description, $due_date, $id);
             array_push($tasks, $new_task);
         }
         return $tasks;
@@ -94,6 +87,17 @@ class Task
             }
         }
         return $found_task;
+    }
+
+    function update($new_description)
+    {
+        $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}' WHERE id = {$this->getId()};");
+        $this->setDescription($new_description);
+    }
+
+    function delete()
+    {
+        $GLOBALS['DB']->exec("DELETE FROM tasks WHERE id = {$this->getId()};");
     }
 
 }

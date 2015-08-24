@@ -26,7 +26,8 @@ class TaskTest extends PHPUnit_Framework_TestCase
     function testGetDescription()
     {
         $description = "Do dishes.";
-        $test_task = new Task($description);
+        $due_date = "tomorrow";
+        $test_task = new Task($description, $due_date);
 
         $result = $test_task->getDescription();
 
@@ -37,7 +38,8 @@ class TaskTest extends PHPUnit_Framework_TestCase
     function testSetDescription()
     {
         $description = "Do dishes.";
-        $test_task = new Task($description);
+        $due_date = "tomorrow";
+        $test_task = new Task($description, $due_date);
 
         $test_task->setDescription("Drink coffee.");
         $result = $test_task->getDescription();
@@ -49,7 +51,8 @@ class TaskTest extends PHPUnit_Framework_TestCase
     {
         $id = 1;
         $description = "Wash the dog";
-        $test_task = new Task($description, $id);
+        $due_date = "tomorrow"; 
+        $test_task = new Task($description, $due_date, $id);
 
         $result = $test_task->getId();
 
@@ -86,32 +89,35 @@ class TaskTest extends PHPUnit_Framework_TestCase
 
     function test_getAll()
     {
-        
+        $description = "Wash the dog";
+        $id = 1;
+        $test_task = new Task($description, $id);
+        $test_task->save();
+
+        $description2 = "Water the lawn";
+        $id2 = 2;
+        $test_task2 = new Task($description2, $id2);
+        $test_task2->save();
+
+        $result = Task::getAll();
+
+        $this->assertEquals([$test_task, $test_task2], $result);
     }
 
     function test_deleteAll()
     {
-        //Arrange
-        $name = "Home stuff";
-        $id = null;
-        $test_category = new Category($name, $id);
-        $test_category->save();
-
         $description = "Wash the dog";
-        $due_date = 1989-12-12;
-        $category_id = $test_category->getId();
-        $test_task = new Task($description, $due_date, $id, $category_id);
+        $id = 1;
+        $test_task = new Task($description, $id);
         $test_task->save();
 
         $description2 = "Water the lawn";
-        $due_date2 = 1989-12-12;
-        $test_task2 = new Task($description2, $due_date2, $id, $category_id);
+        $id2 = 2;
+        $test_task2 = new Task($description2, $id2);
         $test_task2->save();
 
-        //Act
         Task::deleteAll();
 
-        //Assert
         $result = Task::getAll();
         $this->assertEquals([], $result);
     }
@@ -120,28 +126,50 @@ class TaskTest extends PHPUnit_Framework_TestCase
 
     function test_find()
     {
-        //Arrange
-        $name = "Home stuff";
-        $id = null;
-        $test_category = new Category($name, $id);
-        $test_category->save();
-
         $description = "Wash the dog";
-        $due_date = 191989-12-12;
-        $category_id = $test_category->getId();
-        $test_task = new Task($description, $due_date, $id, $category_id);
+        $id = 1;
+        $test_task = new Task($description, $id);
         $test_task->save();
 
         $description2 = "Water the lawn";
-        $due_date2 = "tomorrow";
-        $test_task2 = new Task($description2, $due_date2, $id, $category_id);
+        $id2 = 2;
+        $test_task2 = new Task($description2, $id2);
         $test_task2->save();
 
-        //Act
         $result = Task::find($test_task->getId());
 
-        //Assert
         $this->assertEquals($test_task, $result);
+    }
+
+    function testUpdate()
+    {
+        $description = "Wash the dog";
+        $id = 1;
+        $test_task = new Task($description, $id);
+        $test_task->save();
+
+        $new_description = "Clean the dog";
+
+        $test_task->update($new_description);
+
+        $this->assertEquals("Clean the dog", $test_task->getDescription());
+    }
+
+    function testDeleteTask()
+    {
+        $description = "Wash the dog";
+        $id = 1;
+        $test_task = new Task($description, $id);
+        $test_task->save();
+
+        $description2 = "Water the lawn";
+        $id2 = 2;
+        $test_task2 = new Task($description2, $id2);
+        $test_task2->save();
+
+        $test_task->delete();
+
+        $this->assertEquals([$test_task2], Task::getAll());
     }
 }
 
