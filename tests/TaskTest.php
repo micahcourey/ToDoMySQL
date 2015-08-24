@@ -23,95 +23,70 @@ class TaskTest extends PHPUnit_Framework_TestCase
         Category::deleteAll();
     }
 
+    function testGetDescription()
+    {
+        $description = "Do dishes.";
+        $test_task = new Task($description);
+
+        $result = $test_task->getDescription();
+
+        $this->assertEquals($description, $result);
+
+    }
+
+    function testSetDescription()
+    {
+        $description = "Do dishes.";
+        $test_task = new Task($description);
+
+        $test_task->setDescription("Drink coffee.");
+        $result = $test_task->getDescription();
+
+        $this->assertEquals("Drink coffee.", $result);
+    }
+
     function test_getId()
     {
-        //Arrange
-        $name = "Home stuff";
-        $id = null;
-        $test_category = new Category($name, $id);
-        $test_category->save();
-
+        $id = 1;
         $description = "Wash the dog";
-        $due_date = 1989-12-12;
-        $category_id = $test_category->getId();
-        $test_task = new Task($description, $due_date, $id, $category_id);
-        $test_task->save();
+        $test_task = new Task($description, $id);
 
-        //Act
         $result = $test_task->getId();
 
-        //Assert
-        $this->assertEquals(true, is_numeric($result));
+        $this->assertEquals(1, $result);
     }
 
-    function test_getCategoryId()
-    {
-
-        //Arrange
-        $name = "Home stuff";
-        $id = null;
-        $test_category = new Category($name, $id);
-        $test_category->save();
-
-        $description = "Wash the dog";
-        $due_date = 1989-12-12;
-        $category_id = $test_category->getId();
-        $test_task = new Task($description, $due_date, $id, $category_id);
-        $test_task->save();
-
-        //Act
-        $result = $test_task->getCategoryId();
-
-        //Assert
-        $this->assertEquals(true, is_numeric($result));
-
-    }
 
     function test_save()
     {
-        //Arrange
-        $name = "Home stuff";
-        $id = null;
-        $test_category = new Category($name, $id);
-        $test_category->save();
 
         $description = "Wash the dog";
-        $due_date = 1989-12-12;
-        $category_id = $test_category->getId();
-        $test_task = new Task($description, $due_date, $id, $category_id);
+        $id = 1;
+        $test_task = new Task($description, $id);
 
-        //Act
         $test_task->save();
 
-        //Assert
         $result = Task::getAll();
         $this->assertEquals($test_task, $result[0]);
+
     }
+
+    function testSaveSetsId()
+    {
+            $description = "Wash the dog";
+            $id = 1;
+            $test_task = new Task($description, $id);
+
+            $test_task->save();
+
+            $this->assertEquals(true, is_numeric($test_task->getId()));
+    }
+
+
 
     function test_getAll()
     {
-        //Arrange
-        $name = "Home stuff";
-        $id = null;
-        $test_category = new Category($name, $id);
-        $test_category->save();
-
-        $description = "Wash the dog";
-        $due_date = 1989-12-12;
-        $category_id = $test_category->getId();
-        $test_task = new Task($description, $due_date, $id, $category_id);
-        $test_task->save();
-
-        $description2 = "Water the lawn";
-        $due_date2 = 1989-12-12;
-        $test_task2 = new Task($description2, $due_date2, $id, $category_id);
-        $test_task2->save();
-
-        //Act
-        $result = Task::getAll();
-
-        //Assert
-        $this->assertEquals([$test_task, $test_task2], $result);
+        
     }
 
     function test_deleteAll()
