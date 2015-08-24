@@ -130,7 +130,7 @@
           $test_task->save();
 
           $description2 = "Meet with boss";
-          $due_date2 = "tomorrow"; 
+          $due_date2 = "tomorrow";
           $test_task2 = new Task($description2, $due_date2, $id, $test_category_id);
           $test_task2->save();
 
@@ -139,6 +139,20 @@
 
           //Assert
           $this->assertEquals([$test_task, $test_task2], $result);
+        }
+
+        function testUpdate()
+        {
+            $name = "Work stuff";
+            $id = null;
+            $test_category = new Category($name, $id);
+            $test_category->save();
+
+            $new_name = "Home stuff";
+
+            $test_category->update($new_name); 
+
+            $this->assertEquals("Home stuff", $test_category->getName());
         }
 
     }

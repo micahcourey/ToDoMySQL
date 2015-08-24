@@ -152,7 +152,7 @@ class TaskTest extends PHPUnit_Framework_TestCase
         $test_category->save();
 
         $description = "Wash the dog";
-        $due_date = 191989-12-12
+        $due_date = 191989-12-12;
         $category_id = $test_category->getId();
         $test_task = new Task($description, $due_date, $id, $category_id);
         $test_task->save();
