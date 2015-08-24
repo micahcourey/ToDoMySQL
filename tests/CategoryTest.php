@@ -196,6 +196,25 @@
 
             $this->assertEquals($test_category->getTasks(), [$test_task, $test_task2]);
         }
+
+        function testDelete()
+        {
+            $name = "Work stuff";
+            $id = 1;
+            $test_category = new Category($name, $id);
+            $test_category->save();
+
+            $description = "File reports";
+            $id2 = 2;
+            $due_date = "tomorrow";
+            $test_task = new Task($description, $due_date, $id2);
+            $test_task->save();
+
+            $test_category->addTask($test_task);
+            $test_category->delete();
+
+            $this->assertEquals([], $test_task->getCategories());
+        }
     }
 
  ?>
