@@ -19,6 +19,7 @@
         protected function tearDown()
         {
             Category::deleteAll();
+            Task::deleteAll();
         }
 
         function test_getName()
@@ -150,11 +151,44 @@
 
             $new_name = "Home stuff";
 
-            $test_category->update($new_name); 
+            $test_category->update($new_name);
 
             $this->assertEquals("Home stuff", $test_category->getName());
         }
 
+        function testDelete()
+        {
+            $name = "Work stuff";
+            $id = null;
+            $test_category = new Category($name, $id);
+            $test_category->save();
+
+            $name2 = "Home stuff";
+            $test_category2 = new Category($name2, $id);
+            $test_category2->save();
+
+            $test_category->delete();
+
+            $this->assertEquals([$test_category2], Category::getAll());
+        }
+
+        function testDeleteCategoryTasks()
+        {
+            $name = "Work stuff";
+            $id = null;
+            $test_category = new Category($name, $id);
+            $test_category->save();
+
+            $description = "Build website";
+            $category_id = $test_category->getId();
+            $due_date = "tommorrow"; 
+            $test_task = new Task($description, $due_date, $id, $category_id);
+            $test_task->save();
+
+            $test_category->delete();
+
+            $this->assertEquals([], Task::getAll());
+        }
     }
 
  ?>
