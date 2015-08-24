@@ -9,8 +9,10 @@
             <p>Here are all your tasks:</p>
             <ul>
                 {% for task in tasks %}
-                    <li> {{ task.getDescription }}</li>
-                    <li> {{ task.getDueDate }}</li> 
+                    <li><a href="/tasks/{{ task.getId }}">{{ task.getDescription }}</a></li>
+                    <ul>
+                    <li> {{ task.getDueDate }}</li>
+                </ul>
                     {% endfor %}
             </ul>
         {% endif %}
@@ -20,9 +22,9 @@
             <input id = 'description' name='description' type='text'>
 
             <label for = 'due_date'>Due date</label>
-            <input id = 'due_date' name ='due_date' type='text'>
+            <input id='due_date' name='due_date' type='date' placeholder = "yyyy-mm-dd">
 
-            <button type='submit'>Add category</button>
+            <button type='submit'>Add task</button>
         </form>
         <form action='/delete_tasks' method = 'post'>
             <button type='submit'>Clear</button>
